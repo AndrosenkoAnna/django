@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% load static crispy_forms_tags %}
+
+{% block title %}Products{% endblock %}
+
+{% block content %}
+  <div id="products">
+    <div class="filters-form mb-4">
+      <h3>Filters</h3>
+      <form class="form-inline">
+        {{ filters_form|crispy }}
+        <button type="submit" class="save btn btn-primary mx-2">Search</button>
+      </form>
+    </div>
+    <div class="products">
+      <h1>Products</h1>
+      <div class="row">
+        {% for product in products %}
+          <div class="col-4">
+            {% include "products/item.html" %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
