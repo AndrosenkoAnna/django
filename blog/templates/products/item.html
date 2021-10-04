@@ -1,8 +1,8 @@
 <div class="card">
   <div class="card-body">
-    <img class="card-img-top mb-2" src="{{ product.image.url }}" alt="{{ product.name }}">
-    <h5 class="card-title">{{ product.name }}</h5>
+    <img class="card-img-top mb-2" src="{{ product.image.url }}" alt="{{ product.title }}">
+    <h5 class="card-title">{{ product.title }}</h5>
     <h6 class="card-subtitle mb-2 text-muted">Cost: {{ product.price }} / {{ product.get_status_display }}</h6>
-    <p class="card-text">{{ product.description }}</p>
+    <p class="card-text">{{ product.status }}</p>
   </div>
 </div>

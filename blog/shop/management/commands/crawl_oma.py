@@ -12,4 +12,3 @@ class Command(BaseCommand):
         process = CrawlerProcess(get_project_settings())
         process.crawl(OmaSpider)
         process.start()
-        

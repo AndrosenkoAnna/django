@@ -4,7 +4,7 @@ from shop.models import Product, Purchase
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ("title", "cost", "image", "status")
+    list_display = ("title", "price", "image", "status")
     search_fields = ("title",)
 
 
