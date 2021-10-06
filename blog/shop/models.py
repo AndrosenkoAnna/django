@@ -13,6 +13,7 @@ ORDER_BY_CHOICES = (
 class Product(models.Model):
     title = models.CharField(max_length=200)
     price = models.IntegerField()
+    description = models.TextField(default="")
     image = models.ImageField(null=True, blank=True)
     status = models.CharField(
         max_length=100, choices=STATUS_CHOICES, default="IN_STOCK"
