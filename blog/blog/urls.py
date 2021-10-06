@@ -19,10 +19,10 @@ from shop.views import products_view
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", index, name="index_view"),
+    path("products/", index, name="index_view"),
     path("register/", register_view, name="register_view"),
-    path("products/", products_view, name="products_view"),
     path("api/", include("api.urls", namespace="api")),
+    path("", products_view, name="products_view"),
 ]
 
 
