@@ -15,12 +15,16 @@ from django.urls import include, path
 
 from blog.views import register_view
 from posts.views import index
-from shop.views import products_view
+from shop.views import products_view, product_details_view, PurchaseView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("products/", index, name="index_view"),
     path("register/", register_view, name="register_view"),
+    path("purchases/", PurchaseView.as_view(), name="purchases_view"),
+    path(
+        "product/<int:product_id>/", product_details_view, name="product_details_view"
+    ),
     path("api/", include("api.urls", namespace="api")),
     path("", products_view, name="products_view"),
 ]

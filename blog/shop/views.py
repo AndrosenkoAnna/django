@@ -1,9 +1,12 @@
 from django.db.models import F, Sum
-from django.shortcuts import render
 from django.core.paginator import Paginator
+from django.http import Http404
+from django.shortcuts import render, redirect
+from django.views.generic import TemplateView
+from django.contrib import messages
 
-from shop.forms import ProductFiltersForm
-from shop.models import Product
+from shop.forms import ProductFiltersForm, PurchasesFiltersForm
+from shop.models import Product, Purchase
 
 
 def products_view(request):
@@ -42,3 +45,32 @@ def products_view(request):
         "products/list.html",
         {"filters_form": filters_form, "products": products},
     )
+
+
+def product_details_view(request, *args, **kwargs):
+    product = Product.objects.get(id=kwargs["product_id"])
+
+    # Add PRODUCTS to favorites
+    if request.user.is_authenticated and request.method == "POST":
+        if request.POST["action"] == "add":
+            product.favorites.add(request.user)
+            messages.info(request, "Product successfully added to favorites")
+        elif request.POST["action"] == "remove":
+            product.favorites.remove(request.user)
+            messages.info(request, "Product successfully removed to favorites")
+        elif request.POST["action"] == "purchase":
+            Purchase.objects.create(product=product, user=request.user, count=int(request.POST["count"]))
+            messages.info(request, "Product successfully purchased!")
+        redirect("product_details_view", product_id=product.id)
+
+class PurchaseView(TemplateView):
+    template_name = "products/purchases.html"
+
+    def get_context_data(self, **kwargs):
+        if not self.request.user.is_authenticated:
+            raise Http404
+        purchases = Purchase.objects.filter(user=self.request.user)
+        filters_form = PurchasesFiltersForm(self.request.GET)
+        if filters_form.is_valid() and filters_form.cleaned_data["order_by"]:
+            purchases = purchases.order_by(filters_form.cleaned_data["order_by"])
+        return {"purchases": purchases, "filters_form": filters_form}
